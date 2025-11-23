@@ -1,18 +1,22 @@
-package su.pank.drwebtest.ui.view
+package su.pank.drwebtest.ui.view.applist
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import kotlinx.coroutines.flow.SharingStarted
+import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.catch
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.stateIn
 import su.pank.drwebtest.data.apps.AppsRepository
 import su.pank.drwebtest.data.model.App
-import kotlin.time.Duration.Companion.seconds
 
 class AppListViewModel(private val appsRepository: AppsRepository) : ViewModel() {
-    val state =
-        appsRepository.apps.map { AppListState.Success(it) }.catch { AppListState.Error }.stateIn(
+    val state: StateFlow<AppListState> =
+        appsRepository.apps.map { AppListState.Success(it) }.catch<AppListState> {
+            it.printStackTrace()
+
+            emit(AppListState.Error)
+        }.stateIn(
             viewModelScope,
             SharingStarted.WhileSubscribed(5000),
             AppListState.Loading

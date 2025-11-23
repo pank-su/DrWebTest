@@ -2,10 +2,8 @@ package su.pank.drwebtest.ui.components
 
 import android.graphics.drawable.Drawable
 import androidx.compose.foundation.Image
-import androidx.compose.foundation.background
 import androidx.compose.foundation.basicMarquee
 import androidx.compose.foundation.layout.Arrangement
-import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -13,7 +11,7 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.widthIn
 import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.material3.Icon
+import androidx.compose.material3.Card
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -28,7 +26,6 @@ import androidx.compose.ui.unit.dp
 import androidx.core.content.res.ResourcesCompat
 import androidx.core.graphics.drawable.toBitmap
 import su.pank.drwebtest.R
-import su.pank.drwebtest.data.model.App
 
 
 // Разделение на параметров для уменьшения количества рекомпозиций при изменении данных
@@ -39,14 +36,14 @@ fun AppItem(
     version: String,
     packageName: String,
     hashSum: String,
+    onClick: () -> Unit,
     modifier: Modifier = Modifier
 ) {
 
-    Box(
+    Card(
+        onClick = onClick,
         modifier
-            .widthIn(max = 600.dp)
-            .background(MaterialTheme.colorScheme.surfaceBright, RoundedCornerShape(12.dp))
-            .padding(16.dp)
+            .widthIn(max = 600.dp),
     ) {
 
         Row(
@@ -56,7 +53,13 @@ fun AppItem(
                 .padding(8.dp)
                 .fillMaxWidth()
         ) {
-            Image(icon.toBitmap().asImageBitmap(), contentDescription = "App icon", modifier = Modifier.clip(RoundedCornerShape(12.dp)).size(50.dp))
+            Image(
+                icon.toBitmap().asImageBitmap(),
+                contentDescription = "App icon",
+                modifier = Modifier
+                    .clip(RoundedCornerShape(12.dp))
+                    .size(50.dp)
+            )
 
             Column(modifier = Modifier.weight(1f)) {
                 Text(
@@ -99,10 +102,15 @@ fun AppItem(
 @Composable
 fun AppItemPreview() {
     AppItem(
-        ResourcesCompat.getDrawable(LocalResources.current, R.drawable.ic_launcher_background, null)!!,
+        ResourcesCompat.getDrawable(
+            LocalResources.current,
+            R.drawable.ic_launcher_background,
+            null
+        )!!,
         name = "Example App",
         version = "1.0.0",
         packageName = "com.example.app",
-        hashSum = "abc123def456"
+        hashSum = "abc123def456",
+        {}
     )
 }
