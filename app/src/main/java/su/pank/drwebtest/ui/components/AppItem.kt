@@ -12,6 +12,7 @@ import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.widthIn
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Card
+import androidx.compose.material3.ElevatedCard
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -40,7 +41,7 @@ fun AppItem(
     modifier: Modifier = Modifier
 ) {
 
-    Card(
+    ElevatedCard(
         onClick = onClick,
         modifier
             .widthIn(max = 600.dp),
@@ -104,7 +105,7 @@ fun AppItemPreview() {
     AppItem(
         ResourcesCompat.getDrawable(
             LocalResources.current,
-            R.drawable.ic_launcher_background,
+            R.drawable.ic_launcher_foreground,
             null
         )!!,
         name = "Example App",
