@@ -90,10 +90,14 @@ private fun SuccessAppList(apps: List<App>, onSelectApp: (App) -> Unit) {
     LazyColumn(verticalArrangement = Arrangement.spacedBy(12.dp)) {
         items(apps, key = { it.packageName }) { app ->
             val icon = remember {
-                packageManager.getApplicationIcon(app.packageName)
+                try {
+                    packageManager.getApplicationIcon(app.packageName)
+                } catch (_: Exception) {
+                    null
+                }
             }
             AppItem(icon, app.name, app.version, app.packageName, app.hashSum, {
-
+                onSelectApp(app)
             }, modifier = Modifier.padding(horizontal = 16.dp))
         }
     }

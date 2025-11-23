@@ -11,7 +11,6 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.widthIn
 import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.material3.Card
 import androidx.compose.material3.ElevatedCard
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
@@ -32,7 +31,7 @@ import su.pank.drwebtest.R
 // Разделение на параметров для уменьшения количества рекомпозиций при изменении данных
 @Composable
 fun AppItem(
-    icon: Drawable,
+    icon: Drawable?,
     name: String,
     version: String,
     packageName: String,
@@ -54,13 +53,14 @@ fun AppItem(
                 .padding(8.dp)
                 .fillMaxWidth()
         ) {
-            Image(
-                icon.toBitmap().asImageBitmap(),
-                contentDescription = "App icon",
-                modifier = Modifier
-                    .clip(RoundedCornerShape(12.dp))
-                    .size(50.dp)
-            )
+            if (icon != null)
+                Image(
+                    icon.toBitmap().asImageBitmap(),
+                    contentDescription = "App icon",
+                    modifier = Modifier
+                        .clip(RoundedCornerShape(12.dp))
+                        .size(50.dp)
+                )
 
             Column(modifier = Modifier.weight(1f)) {
                 Text(
