@@ -11,5 +11,6 @@ data class AppDetailedInfo(
     val versionCode: Long,
     val isSystemApp: Boolean,
     val permissions: List<String>,
-    val apkSize: Long
+    val apkSize: Long,
+    val hash: String? = null
 )

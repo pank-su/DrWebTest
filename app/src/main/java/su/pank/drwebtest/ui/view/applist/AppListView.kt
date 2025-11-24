@@ -83,27 +83,25 @@ fun AppList(onSelectApp: (App) -> Unit, viewModel: AppListViewModel = koinViewMo
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-private fun SuccessAppList(apps: List<App>, onSelectApp: (App) -> Unit, viewModel: AppListViewModel = koinViewModel()) {
+private fun SuccessAppList(
+    apps: List<App>,
+    onSelectApp: (App) -> Unit,
+    viewModel: AppListViewModel = koinViewModel()
+) {
     val context = LocalContext.current
     val packageManager = context.packageManager
 
     LazyColumn(verticalArrangement = Arrangement.spacedBy(12.dp)) {
         items(apps, key = { it.packageName }) { app ->
-            val icon = remember {
-                try {
-                    packageManager.getApplicationIcon(app.packageName)
-                } catch (_: Exception) {
-                    null
-                }
-            }
+
             var hash: String? by remember {
                 mutableStateOf(null)
             }
             LaunchedEffect(app) {
-                delay(0.5.seconds) // Небольшая задержка, чтобы не нагружать сразу базу данных при большом количестве приложений
+                //delay(0.5.seconds) // Небольшая задержка, чтобы не нагружать сразу базу данных при большом количестве приложений
                 hash = viewModel.getHashForApp(app.packageName)
             }
-            AppItem(icon, app.name, app.version, app.packageName, hash, {
+            AppItem(app.name, app.version, app.packageName, hash, {
                 onSelectApp(app)
             }, modifier = Modifier.padding(horizontal = 16.dp))
         }

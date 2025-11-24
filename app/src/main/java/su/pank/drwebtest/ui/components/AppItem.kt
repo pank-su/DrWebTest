@@ -1,7 +1,5 @@
 package su.pank.drwebtest.ui.components
 
-import android.graphics.drawable.Drawable
-import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.basicMarquee
 import androidx.compose.foundation.layout.Arrangement
@@ -22,20 +20,19 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
-import androidx.compose.ui.graphics.asImageBitmap
-import androidx.compose.ui.platform.LocalResources
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import androidx.core.content.res.ResourcesCompat
-import androidx.core.graphics.drawable.toBitmap
-import su.pank.drwebtest.R
+import coil3.compose.AsyncImage
+import coil3.request.ImageRequest
+import coil3.request.crossfade
+import su.pank.drwebtest.ui.utils.AppIcon
 
 
 // Разделение на параметров для уменьшения количества рекомпозиций при изменении данных
 @Composable
 fun AppItem(
-    icon: Drawable?,
     name: String,
     version: String,
     packageName: String,
@@ -43,6 +40,7 @@ fun AppItem(
     onClick: () -> Unit,
     modifier: Modifier = Modifier
 ) {
+    val context = LocalContext.current
 
     ElevatedCard(
         onClick = onClick,
@@ -57,14 +55,17 @@ fun AppItem(
                 .padding(8.dp)
                 .fillMaxWidth()
         ) {
-            if (icon != null)
-                Image(
-                    icon.toBitmap().asImageBitmap(),
-                    contentDescription = "App icon",
-                    modifier = Modifier
-                        .clip(RoundedCornerShape(12.dp))
-                        .size(50.dp)
-                )
+            AsyncImage(
+                ImageRequest.Builder(LocalContext.current)
+                    .data(AppIcon(packageName))
+                    .memoryCacheKey(packageName).diskCacheKey(packageName)
+                    .crossfade(true)
+                    .build(),
+                contentDescription = "App icon",
+                modifier = Modifier
+                    .clip(RoundedCornerShape(12.dp))
+                    .size(50.dp)
+            )
 
             Column(modifier = Modifier.weight(1f)) {
                 Text(
@@ -99,7 +100,15 @@ fun AppItem(
                         modifier = Modifier.widthIn(max = 70.dp)
                     )
                 else
-                    Box(Modifier.background(MaterialTheme.colorScheme.outline, RoundedCornerShape(2.dp)).height(14.dp).width(70.dp))
+                    Box(
+                        Modifier
+                            .background(
+                                MaterialTheme.colorScheme.outline,
+                                RoundedCornerShape(2.dp)
+                            )
+                            .height(14.dp)
+                            .width(70.dp)
+                    )
             }
         }
     }
@@ -109,11 +118,6 @@ fun AppItem(
 @Composable
 fun AppItemPreview() {
     AppItem(
-        ResourcesCompat.getDrawable(
-            LocalResources.current,
-            R.drawable.ic_launcher_foreground,
-            null
-        )!!,
         name = "Example App",
         version = "1.0.0",
         packageName = "com.example.app",

@@ -135,8 +135,18 @@ fun AppDetail(
                 ) {
                     InfoRow(label = "Пакет", value = app.packageName)
                     InfoRow(label = "Версия", value = app.version)
-                    InfoRow(label = "Хеш-сумма", value = "TODO")
-                }
+                    if (detailedInfoState is AppDetailedInfoState.Success) {
+                        InfoRow(
+                            label = "Хеш-сумма",
+                            value = (detailedInfoState as AppDetailedInfoState.Success).info.hash
+                                ?: "N/A"
+                        )
+                    } else {
+                        InfoRow(
+                            label = "Хеш-сумма",
+                            value = "Загрузка..."
+                        )
+                    }                }
             }
 
             DetailedInfoSection(detailedInfoState)

@@ -3,18 +3,19 @@ package su.pank.drwebtest.ui.view.appdetail
 import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.flow.stateIn
-import kotlinx.coroutines.launch
 import su.pank.drwebtest.data.apps.AppsRepository
 import su.pank.drwebtest.data.model.AppDetailedInfo
+import su.pank.drwebtest.domain.ApkHashUseCase
 
 class AppDetailViewModel(
     private val stateHandle: SavedStateHandle,
-    private val appsRepository: AppsRepository
+    private val appsRepository: AppsRepository,
+    private val apkHashUseCase: ApkHashUseCase
+
 ) : ViewModel() {
 
     val packageName: String = stateHandle["packageName"] ?: error("packageName is required")
@@ -22,7 +23,9 @@ class AppDetailViewModel(
     val detailedInfo: StateFlow<AppDetailedInfoState> = flow<AppDetailedInfoState> {
         val info = appsRepository.getAppDetailedInfo(packageName)
         if (info != null) {
-            emit(AppDetailedInfoState.Success(info))
+            val hash = apkHashUseCase(packageName)
+            val infoWithHash = info.copy(hash = hash)
+            emit(AppDetailedInfoState.Success(infoWithHash))
         } else {
             emit(AppDetailedInfoState.Error)
         }
