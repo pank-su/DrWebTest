@@ -2,13 +2,17 @@ package su.pank.drwebtest.ui.components
 
 import android.graphics.drawable.Drawable
 import androidx.compose.foundation.Image
+import androidx.compose.foundation.background
 import androidx.compose.foundation.basicMarquee
 import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.layout.widthIn
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.ElevatedCard
@@ -35,7 +39,7 @@ fun AppItem(
     name: String,
     version: String,
     packageName: String,
-    hashSum: String,
+    hashSum: String? = null,
     onClick: () -> Unit,
     modifier: Modifier = Modifier
 ) {
@@ -86,14 +90,16 @@ fun AppItem(
                     modifier = Modifier.widthIn(max = 70.dp)
                 )
 
-                Text(
-                    text = hashSum,
-
-                    style = MaterialTheme.typography.bodyMedium,
-                    overflow = TextOverflow.Ellipsis,
-                    maxLines = 1,
-                    modifier = Modifier.widthIn(max = 70.dp)
-                )
+                if (hashSum != null)
+                    Text(
+                        text = hashSum,
+                        style = MaterialTheme.typography.bodyMedium,
+                        overflow = TextOverflow.Ellipsis,
+                        maxLines = 1,
+                        modifier = Modifier.widthIn(max = 70.dp)
+                    )
+                else
+                    Box(Modifier.background(MaterialTheme.colorScheme.outline, RoundedCornerShape(2.dp)).height(14.dp).width(70.dp))
             }
         }
     }

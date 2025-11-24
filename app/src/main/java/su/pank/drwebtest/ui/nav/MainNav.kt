@@ -20,7 +20,6 @@ fun MainNav(){
                         packageName = app.packageName,
                         name = app.name,
                         version = app.version,
-                        hashSum = app.hashSum
                     )
                 )
             })

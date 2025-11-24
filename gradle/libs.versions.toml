@@ -12,6 +12,9 @@ koin-bom = "4.1.1"
 material3 = "1.5.0-alpha09"
 navigationCompose = "2.9.6"
 kotlinx-serialization = "1.9.0"
+ksp = "2.3.0"
+room = "2.8.3"
+
 
 
 [libraries]
@@ -41,9 +44,13 @@ koin-compose-viewmodel-navigation = { module = "io.insert-koin:koin-compose-view
 
 kotlinx-serialization-json = { group = "org.jetbrains.kotlinx", name = "kotlinx-serialization-json", version.ref = "kotlinx-serialization" }
 
+room-runtime = { module = "androidx.room:room-runtime", version.ref = "room" }
+room-ktx = { module = "androidx.room:room-ktx", version.ref = "room" }
+room-compiler = { module = "androidx.room:room-compiler", version.ref = "room" }
+
 [plugins]
 android-application = { id = "com.android.application", version.ref = "agp" }
 kotlin-android = { id = "org.jetbrains.kotlin.android", version.ref = "kotlin" }
 kotlin-compose = { id = "org.jetbrains.kotlin.plugin.compose", version.ref = "kotlin" }
 kotlinx-serialization = { id = "org.jetbrains.kotlin.plugin.serialization", version.ref = "kotlin" }
-
+ksp = { id = "com.google.devtools.ksp", version.ref = "ksp" }

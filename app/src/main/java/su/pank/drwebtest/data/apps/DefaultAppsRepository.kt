@@ -36,7 +36,6 @@ class DefaultAppsRepository(
                         version = pm.getPackageInfo(info.packageName, 0).versionName
                             ?: "N/A",
                         packageName = info.packageName,
-                        hashSum = getApkHash(info.sourceDir)
                     )
                 }
             }

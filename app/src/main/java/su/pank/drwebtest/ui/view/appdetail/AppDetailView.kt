@@ -61,7 +61,6 @@ data class AppDetail(
     val packageName: String,
     val name: String,
     val version: String,
-    val hashSum: String
 )
 
 @OptIn(ExperimentalMaterial3Api::class)
@@ -136,7 +135,7 @@ fun AppDetail(
                 ) {
                     InfoRow(label = "Пакет", value = app.packageName)
                     InfoRow(label = "Версия", value = app.version)
-                    InfoRow(label = "Хеш-сумма", value = app.hashSum)
+                    InfoRow(label = "Хеш-сумма", value = "TODO")
                 }
             }
 
