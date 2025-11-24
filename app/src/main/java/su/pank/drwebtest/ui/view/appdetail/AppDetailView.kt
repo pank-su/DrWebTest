@@ -76,9 +76,7 @@ fun AppDetail(
     
     val detailedInfoState by viewModel.detailedInfo.collectAsStateWithLifecycle()
     
-    LaunchedEffect(app.packageName) {
-        viewModel.loadDetailedInfo(app.packageName)
-    }
+
 
     val scrollBehavior = TopAppBarDefaults.enterAlwaysScrollBehavior(rememberTopAppBarState())
 
