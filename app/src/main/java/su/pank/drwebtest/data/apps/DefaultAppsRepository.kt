@@ -6,6 +6,9 @@ import android.content.pm.PackageManager
 import android.os.Build
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.async
+import kotlinx.coroutines.awaitAll
+import kotlinx.coroutines.coroutineScope
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.flow.flowOn
@@ -25,14 +28,19 @@ class DefaultAppsRepository(
     // Можно сделать загрузку с помощью Pager
     override val apps: Flow<List<App>> = flow {
         pm.getInstalledApplications(0).map { info ->
-            App(
-                name = pm.getApplicationLabel(info).toString(),
-                version = pm.getPackageInfo(info.packageName, 0).versionName
-                    ?: "N/A",
-                packageName = info.packageName,
-                hashSum = getApkHash(info.sourceDir)
-            )
-        }.sortedBy { it.name }.also {
+
+            coroutineScope {
+                async {
+                    App(
+                        name = pm.getApplicationLabel(info).toString(),
+                        version = pm.getPackageInfo(info.packageName, 0).versionName
+                            ?: "N/A",
+                        packageName = info.packageName,
+                        hashSum = getApkHash(info.sourceDir)
+                    )
+                }
+            }
+        }.awaitAll().sortedBy { it.name }.also {
             emit(it)
         }
     }.flowOn(ioDispatcher)
@@ -74,7 +82,7 @@ class DefaultAppsRepository(
             }
         }
 
-    private fun getApkHash(sourceDir: String, algorithm: String = "SHA-256"): String {
+    private suspend fun getApkHash(sourceDir: String, algorithm: String = "SHA-256"): String {
         val file = File(sourceDir)
         val digest = MessageDigest.getInstance(algorithm)
         FileInputStream(file).use {
